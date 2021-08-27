@@ -1,5 +1,9 @@
 package com.pollra.refactoring.removeif;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * @since       2021.08.27
  * @author      pollra
@@ -13,22 +17,24 @@ public class Number {
     }
 
     public Number calculate(String expression, Number number) {
-        if ("+".equals(expression)) {
-            return new Number(this.no + number.no);
-        }
+        Map<String, BinaryFunction<Integer, Number>> operatorMap = new HashMap<>();
+        operatorMap.put("+", (a, b) -> new Number(a + b));
+        operatorMap.put("-", (a, b) -> new Number(a - b));
+        operatorMap.put("*", (a, b) -> new Number(a * b));
+        operatorMap.put("/", (a, b) -> new Number(a / b));
+        return Optional.ofNullable(operatorMap.get(expression))
+                .orElseThrow(IllegalArgumentException::new)
+                .apply(this.no, number.no);
+    }
 
-        if ("-".equals(expression)) {
-            return new Number(this.no - number.no);
-        }
+    public int getNo() {
+        return no;
+    }
 
-        if ("*".equals(expression)) {
-            return new Number(this.no * number.no);
-        }
-
-        if ("/".equals(expression)) {
-            return new Number(this.no / number.no);
-        }
-
-        throw new IllegalArgumentException();
+    @Override
+    public String toString() {
+        return "Number{" +
+                "no=" + no +
+                "}";
     }
 }
