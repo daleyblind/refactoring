@@ -30,11 +30,4 @@ public class Number {
     public int getNo() {
         return no;
     }
-
-    @Override
-    public String toString() {
-        return "Number{" +
-                "no=" + no +
-                "}";
-    }
 }
